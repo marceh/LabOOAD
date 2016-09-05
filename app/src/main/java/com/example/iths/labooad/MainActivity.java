@@ -97,19 +97,23 @@ public class MainActivity extends AppCompatActivity implements CallbackExecutor{
             @Override
             public void onClick(View v) {
 
-                if (InternetChecker.checkInternet(self)){
-                    String cityName = editTextCityName.getText().toString();
-                    int cityHabitants = Integer.parseInt(editTextCityHabitants.getText().toString());
-                    CityJson cityJson = new CityJson.CityJsonBuilder().setName(cityName).setHabitants(cityHabitants).build();
-                    new PostJsonHelper(self, cityJson.getCityJsonStringToPost(), (CallbackExecutor) self).execute();
+                try {
+                    if (InternetChecker.checkInternet(self)){
+                        String cityName = editTextCityName.getText().toString();
+                        int cityHabitants = Integer.parseInt(editTextCityHabitants.getText().toString());
+                        CityJson cityJson = new CityJson.CityJsonBuilder().setName(cityName).setHabitants(cityHabitants).build();
+                        new PostJsonHelper(self, cityJson.getCityJsonStringToPost(), (CallbackExecutor) self).execute();
 
-                    itemManager.addCityToCities(new City(cityName,cityHabitants));
+                        itemManager.addCityToCities(new City(cityName,cityHabitants));
 
-                    clearEditTextFields();
+                        clearEditTextFields();
 
-                } else {
+                    } else {
 
-                    Toast.makeText(self, "Need Internet Connection", Toast.LENGTH_LONG).show();
+                        Toast.makeText(self, "Need Internet Connection", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e) {
+                    Toast.makeText(self, "Invalid Input!", Toast.LENGTH_SHORT).show();
                 }
 
             }
